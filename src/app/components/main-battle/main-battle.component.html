@@ -1,0 +1,47 @@
+<div class="row" [formGroup]="formGroup">
+
+    <div class="col-6">
+        <table>
+            <tbody>
+            <tr *ngFor="let row of grid; let i = index">
+                <td class="border d-inline-flex justify-content-center align-items-center"
+                    *ngFor="let col of row; let k = index" width="60px"
+                    height="60px" (click)="moveMario(i, k)">
+                    <img src="assets/27-270956_mario-face-png-super-mario-face-png.png" width="50px"
+                         *ngIf="col.type === 'mario'">
+                    <img src="assets/15-152258_bowser-super-mario-bowser.png" width="50px"
+                         *ngIf="col.type === 'bowser'">
+                    <div *ngIf="col.type === 'block' || col.type === 'empty'">
+                        <span>({{i + ',' + k}})</span>
+                    </div>
+                    <div *ngIf="col.type === 'next_move'">
+                        <span class="text-danger">
+                            <fa-icon [icon]="mapMarker"></fa-icon>
+                        </span>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-3 p-5 m-0">
+        <h4>
+            Query
+        </h4>
+        <textarea class="w-100 form-control" rows="10" cols="5" formControlName="query"
+                  placeholder="ask x,y"></textarea>
+        <button class="btn btn-primary" (click)="demostration()">
+            Submit
+        </button>
+    </div>
+    <div class="col-3 p-5 m-0">
+        <h4>
+            Satisfied
+        </h4>
+        <textarea class="w-100 text-success form-control" rows="5" cols="5" formControlName="satisfied"></textarea>
+        <h4>
+            Unsatisfied
+        </h4>
+        <textarea class="w-100 text-danger form-control" rows="5" cols="5" formControlName="unsatisfied"></textarea>
+    </div>
+</div>
