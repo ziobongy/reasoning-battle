@@ -2,12 +2,11 @@ import {Component, OnInit} from '@angular/core';
 import {ObjectInGrid} from '../../model/ObjectInGrid';
 import {environment} from '../../../environments/environment';
 import * as cytoscape from 'cytoscape';
-import {CytoscapeOptions, NodeSingular} from 'cytoscape';
-import {CytoscapeOptionsExtended} from '../../model/node';
-import {TripleRDF} from '../../model/tripleRDF';
+import {NodeSingular} from 'cytoscape';
 import {UtilityService} from '../../service/utility.service';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {faMapMarker} from '@fortawesome/free-solid-svg-icons/faMapMarker';
+import {Triple} from '../../model/triple';
 
 @Component({
     selector: 'app-main-battle',
@@ -24,7 +23,7 @@ export class MainBattleComponent implements OnInit {
     private bowserPosition: { x: number, y: number } = {x: 0, y: 0};
 
     private graph: cytoscape.Core = cytoscape();
-    private constraints: Array<Array<TripleRDF<any>>> = [];
+    private constraints: Array<Array<Triple<any>>> = [];
 
     grid: Array<Array<ObjectInGrid>> = [];
     formGroup: FormGroup;
@@ -292,21 +291,7 @@ export class MainBattleComponent implements OnInit {
                             row[0].compute((row[0].resource === 'X' ? x : y)),
                             row[1].compute((row[1].resource === 'X' ? x : y))
                         );
-                    // (!row[0].compute((row[0].resource === 'X' ? x : y)) ? row[1].compute((row[1].resource === 'X' ? x : y)) : true);
                 }
-                /*!(
-                    (
-                        row[0].compute((row[0].resource === 'X' ? x : y))
-                        &&
-                        !row[1].compute((row[1].resource === 'X' ? x : y))
-                    )
-                    ||
-                    (
-                        !row[0].compute((row[0].resource === 'X' ? x : y))
-                        &&
-                        !row[1].compute((row[1].resource === 'X' ? x : y))
-                    )
-                );*/
 
             }
         );
@@ -353,27 +338,27 @@ export class MainBattleComponent implements OnInit {
                         if (row[0].resource.length === 1) {
                             if (row[0].computeUNary(row[0].resource === 'X' ? x : y)) {
                                 resultSatisfied += divisor + '\n';
-                                resultSatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                                resultSatisfied += UtilityService.getDecriptionTriple(row[0]) + '\n';
                             } else {
                                 resultUnsatisfied += divisor + '\n';
-                                resultUnsatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                                resultUnsatisfied += UtilityService.getDecriptionTriple(row[0]) + '\n';
                             }
                         } else {
                             if (row[0].computeUNary(x, y)) {
                                 resultSatisfied += divisor + '\n';
-                                resultSatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                                resultSatisfied += UtilityService.getDecriptionTripleUnary(row[0]) + '\n';
                             } else {
                                 resultUnsatisfied += divisor + '\n';
-                                resultUnsatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                                resultUnsatisfied += UtilityService.getDecriptionTripleUnary(row[0]) + '\n';
                             }
                         }
                     } else {
                         if (row[0].compute(row[0].resource === 'X' ? x : y)) {
                             resultSatisfied += divisor + '\n';
-                            resultSatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                            resultSatisfied += UtilityService.getDecriptionTriple(row[0]) + '\n';
                         } else {
                             resultUnsatisfied += divisor + '\n';
-                            resultUnsatisfied += UtilityService.getDecriptionRDF(row[0]) + '\n';
+                            resultUnsatisfied += UtilityService.getDecriptionTriple(row[0]) + '\n';
                         }
                     }
                 } else {
@@ -385,19 +370,19 @@ export class MainBattleComponent implements OnInit {
                     if (result) {
                         resultSatisfied += divisor + '\n';
                         resultSatisfied +=
-                            UtilityService.getDecriptionRDF(row[0]) +
+                            UtilityService.getDecriptionTriple(row[0]) +
                             ((row[1].getDescription != null) ? row[1].getDescription : '') +
                             '\n\tXOR\n' +
-                            UtilityService.getDecriptionRDF(row[1]) +
+                            UtilityService.getDecriptionTriple(row[1]) +
                             ((row[1].getDescription != null) ? row[1].getDescription : '') +
                             '\n';
                     } else {
                         resultUnsatisfied += divisor + '\n';
                         resultUnsatisfied +=
-                            UtilityService.getDecriptionRDF(row[0]) +
+                            UtilityService.getDecriptionTriple(row[0]) +
                             ((row[1].getDescription != null) ? row[1].getDescription : '') +
                             '\n\tXOR\n' +
-                            UtilityService.getDecriptionRDF(row[1]) +
+                            UtilityService.getDecriptionTriple(row[1]) +
                             ((row[1].getDescription != null) ? row[1].getDescription : '') +
                             '\n';
                     }

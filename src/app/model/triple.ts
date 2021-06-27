@@ -1,4 +1,4 @@
-export class TripleRDF <T>{
+export class Triple <T>{
     private subject: string;
     private condition: string;
     private value: () => T;
@@ -33,7 +33,7 @@ export class TripleRDF <T>{
     get isUnary(): boolean {
         return this.unaryCondition != null;
     }
-    get getDescription() {
+    get getDescription(): string | undefined {
         return this.description;
     }
 

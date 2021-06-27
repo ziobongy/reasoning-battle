@@ -1,4 +1,4 @@
-import {TripleRDF} from '../model/tripleRDF';
+import {TripleRDF} from '../model/triple';
 
 export class Constants {
 }

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {TripleRDF} from '../model/tripleRDF';
+import {Triple} from '../model/triple';
 import {CytoscapeOptionsExtended} from '../model/node';
 
 @Injectable({
@@ -17,90 +17,95 @@ export class UtilityService {
         );
     }
 
-    static createConstraints(marioPosition: () => {x: number, y: number}, bowserPosition: () => { x: number, y: number }, hGrid: number, wGrid: number): Array<Array<TripleRDF<any>>> {
-        const result: Array<Array<TripleRDF<any>>> = [];
+    static createConstraints(
+        marioPosition: () => {x: number, y: number},
+        bowserPosition: () => { x: number, y: number },
+        hGrid: number,
+        wGrid: number
+    ): Array<Array<Triple<any>>> {
+        const result: Array<Array<Triple<any>>> = [];
         result.push(
             [
-                new TripleRDF('X', '<', () => hGrid)
+                new Triple('X', '<', () => hGrid)
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '>=', () => 0)
+                new Triple('X', '>=', () => 0)
             ]
         );
         result.push(
             [
-                new TripleRDF('Y', '<', () => wGrid)
+                new Triple('Y', '<', () => wGrid)
             ]
         );
         result.push(
             [
-                new TripleRDF('Y', '>=', () => 0)
+                new Triple('Y', '>=', () => 0)
             ]
         );
         result.push(
             [
-                new TripleRDF<any>('X', 'distance', () => 1, (x: number) => Math.abs(x - marioPosition().x) <= 1)
+                new Triple<any>('X', 'distance', () => 1, (x: number) => Math.abs(x - marioPosition().x) <= 1)
             ]
         );
         result.push(
             [
-                new TripleRDF<any>('Y', 'distance', () => 1, (x: number) => Math.abs(x - marioPosition().y) <= 1)
+                new Triple<any>('Y', 'distance', () => 1, (x: number) => Math.abs(x - marioPosition().y) <= 1)
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x + 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y + 1, undefined, '(possibly bowser position)')
             ]
         );
         result.push(
             [
-                new TripleRDF('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
-                new TripleRDF('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
+                new Triple('X', '!=', () => bowserPosition().x - 1, undefined, '(possibly bowser position)'),
+                new Triple('Y', '!=', () => bowserPosition().y - 1, undefined, '(possibly bowser position)')
             ]
         );
 
         result.push(
             [
-                new TripleRDF('XY',
+                new Triple('XY',
                     'isEmpty',
                     () => 0,
                     (x: number, y: number) => {
@@ -258,7 +263,10 @@ export class UtilityService {
         return bean.split(toReplace).join(replacement);
     }
 
-    static getDecriptionRDF(triple: TripleRDF<any>): string {
+    static getDecriptionTriple(triple: Triple<any>): string {
         return triple.resource + triple.getCondition + triple.getValue;
+    }
+    static getDecriptionTripleUnary(triple: Triple<any>): string {
+        return triple.resource + triple.getCondition;
     }
 }
