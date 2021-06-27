@@ -41,6 +41,9 @@ export class MainBattleComponent implements OnInit {
             }
         );
     }
+    get query() {
+        return this.formGroup.get('query');
+    }
 
     ngOnInit(): void {
         const els = UtilityService.createGraph((x, y) => () => this.checkConstraints(x, y));

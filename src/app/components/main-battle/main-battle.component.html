@@ -29,7 +29,13 @@
             Query
         </h4>
         <textarea class="w-100 form-control" rows="10" cols="5" formControlName="query"
-                  placeholder="ask x,y"></textarea>
+                  placeholder="ask x,y"
+                  [ngClass]="{'isInvalid': submitted && query != null && query.invalid}"></textarea>
+        <div class="col-12 pl-0 mb-2">
+            <span *ngIf="submitted && query != null && query.invalid" class="text-danger">
+                You must insert a query like "ask x,y"
+            </span>
+        </div>
         <button class="btn btn-primary" (click)="demostration()">
             Submit
         </button>
